@@ -132,6 +132,8 @@
   "feature.wynntils.gammabright.lastGamma.name": "Last Gamma",
   "feature.wynntils.gammabright.name": "Gammabright Keybind",
   "feature.wynntils.gearViewer.name": "Gear Viewer",
+  "feature.wynntils.guildStarsToRank.name": "Change guild stars tp their rank",
+  "feature.wynntils.guildStarsAsRank.description": "Change guild rank stars to their equivelant text",
   "feature.wynntils.guildAttackTimerOverlay.disableAttackTimersOnScoreboard.description": "Should guild attack timers be removed from the scoreboard? This option only works if Guild Attack Timers is turned on.",
   "feature.wynntils.guildAttackTimerOverlay.disableAttackTimersOnScoreboard.name": "Disable Guild Attack Timers on Scoreboard",
   "feature.wynntils.guildAttackTimerOverlay.name": "Guild Attack Timers",

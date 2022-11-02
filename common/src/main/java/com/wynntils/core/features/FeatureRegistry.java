@@ -36,6 +36,7 @@ import com.wynntils.features.user.FixCastingSpellsFromInventoryFeature;
 import com.wynntils.features.user.FixPacketBugsFeature;
 import com.wynntils.features.user.GammabrightFeature;
 import com.wynntils.features.user.GearViewerFeature;
+import com.wynntils.features.user.GuildStarsToRankFeature;
 import com.wynntils.features.user.HadesFeature;
 import com.wynntils.features.user.HealthPotionBlockerFeature;
 import com.wynntils.features.user.InfoMessageFilterFeature;
@@ -173,6 +174,7 @@ public final class FeatureRegistry {
         registerFeature(new WynncraftButtonFeature());
         registerFeature(new WynncraftPauseScreenFeature());
         registerFeature(new WynntilsQuestBookFeature());
+        registerFeature(new GuildStarsToRankFeature());
 
         // save/create config file after loading all features' options
         ConfigManager.saveConfig();
