@@ -317,7 +317,7 @@ public class CharacterManager extends CoreManager {
             return McUtils.player().experienceProgress;
         }
 
-        public int getXpLevel() {
+        public static int getXpLevel() {
             return McUtils.player().experienceLevel;
         }
 
