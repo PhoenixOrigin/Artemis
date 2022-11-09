@@ -7,11 +7,13 @@ package com.wynntils.wynn.model;
 import com.wynntils.core.WynntilsMod;
 import com.wynntils.core.managers.CoreManager;
 import com.wynntils.core.webapi.profiles.ingredient.ProfessionType;
+import com.wynntils.mc.event.ClientTickEvent;
 import com.wynntils.mc.event.ContainerClickEvent;
 import com.wynntils.mc.event.MenuEvent.MenuClosedEvent;
 import com.wynntils.mc.utils.ItemUtils;
 import com.wynntils.mc.utils.McUtils;
 import com.wynntils.utils.MathUtils;
+import com.wynntils.utils.objects.TimedSet;
 import com.wynntils.wynn.event.CharacterUpdateEvent;
 import com.wynntils.wynn.event.WorldStateEvent;
 import com.wynntils.wynn.model.container.ScriptedContainerQuery;
@@ -21,6 +23,7 @@ import com.wynntils.wynn.utils.InventoryUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.minecraft.world.item.ItemStack;
@@ -148,6 +151,10 @@ public class CharacterManager extends CoreManager {
         private final int id;
 
         private final ProfessionInfo professionInfo;
+        private static final TimedSet<Float> XP_GAINED_SET = new TimedSet<>(60, TimeUnit.SECONDS);
+        private static float currentXp = CharacterManager.getCharacterInfo().getCurrentXp();
+
+
 
         private CharacterInfo(
                 ClassType classType, boolean reskinned, int level, int id, ProfessionInfo professionInfo) {
@@ -294,13 +301,19 @@ public class CharacterManager extends CoreManager {
             return 24000 - (int) (McUtils.mc().level.getDayTime() % 24000);
         }
 
-        public float getCurrentXp() {
+        public static float getCurrentXp() {
             // We calculate our level in points by seeing how far we've progress towards our
             // current XP level's max
             return getXpProgress() * getXpPointsNeededToLevelUp();
         }
 
-        public float getXpProgress() {
+        public static float getCurrentXpNeeded() {
+            // We calculate our level in points by seeing how far we've progress towards our
+            // current XP level's max
+            return getXpPointsNeededToLevelUp() - (getXpProgress() * getXpPointsNeededToLevelUp());
+        }
+
+        public static float getXpProgress() {
             return McUtils.player().experienceProgress;
         }
 
@@ -308,7 +321,7 @@ public class CharacterManager extends CoreManager {
             return McUtils.player().experienceLevel;
         }
 
-        public int getXpPointsNeededToLevelUp() {
+        public static int getXpPointsNeededToLevelUp() {
             int levelIndex = getXpLevel() - 1;
             if (levelIndex >= LEVEL_UP_XP_REQUIREMENTS.length) {
                 return Integer.MAX_VALUE;
@@ -317,6 +330,25 @@ public class CharacterManager extends CoreManager {
                 return 0;
             }
             return LEVEL_UP_XP_REQUIREMENTS[levelIndex];
+        }
+
+        public static Float getXpPerMinute() {
+            float totalXp = 0;
+            for(float xp : XP_GAINED_SET){
+                totalXp += xp;
+            }
+            return totalXp;
+        }
+
+        @SubscribeEvent
+        public static void onTick(ClientTickEvent event){
+            if(currentXp == getCurrentXp()) {
+                XP_GAINED_SET.put(0F);
+                return;
+            }
+            XP_GAINED_SET.put(currentXp - getCurrentXp());
+            XP_GAINED_SET.releaseEntries();
+            currentXp = getCurrentXp();
         }
     }
 }

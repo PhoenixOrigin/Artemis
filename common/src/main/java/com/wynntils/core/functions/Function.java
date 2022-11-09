@@ -10,7 +10,7 @@ import java.util.List;
 import net.minecraft.client.resources.language.I18n;
 
 public abstract class Function<T> implements Translatable {
-    private final String name;
+    private String name;
     private final String translationName;
 
     public Function() {
@@ -43,5 +43,9 @@ public abstract class Function<T> implements Translatable {
 
     public String getTranslation(String keySuffix) {
         return I18n.get("function.wynntils." + getTranslationKeyName() + "." + keySuffix);
+    }
+
+    public void setName(String name){
+        this.name = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, name);
     }
 }

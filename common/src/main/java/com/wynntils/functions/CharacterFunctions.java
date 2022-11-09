@@ -4,13 +4,19 @@
  */
 package com.wynntils.functions;
 
+import com.google.common.eventbus.Subscribe;
 import com.wynntils.core.functions.DependantFunction;
 import com.wynntils.core.functions.Function;
 import com.wynntils.core.managers.Model;
+import com.wynntils.mc.event.ClientTickEvent;
 import com.wynntils.utils.StringUtils;
+import com.wynntils.utils.objects.TimedSet;
 import com.wynntils.wynn.model.ActionBarModel;
 import com.wynntils.wynn.model.CharacterManager;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class CharacterFunctions {
     public static class SoulpointFunction extends Function<Integer> {
@@ -191,6 +197,37 @@ public class CharacterFunctions {
         public Integer getValue(String argument) {
             return CharacterManager.getCharacterInfo().getXpPointsNeededToLevelUp();
         }
+    }
+
+    public static class XpNeededFunction extends Function<Float> {
+        @Override
+        public Float getValue(String argument) {
+            return CharacterManager.getCharacterInfo().getCurrentXpNeeded();
+        }
+
+    }
+
+    public static class XpPerMinuteFunction extends Function<Float> {
+
+        @Override
+        public Float getValue(String argument) {
+            return CharacterManager.getCharacterInfo().getXpPerMinute();
+
+        }
+
+    }
+
+    public static class MinutesTillLevelUp extends Function<Float> {
+
+        public MinutesTillLevelUp(){
+            setName("time_till_level");
+        }
+
+        @Override
+        public Float getValue(String argument) {
+            return CharacterManager.getCharacterInfo().getXpPointsNeededToLevelUp() / CharacterManager.getCharacterInfo().getXpPerMinute();
+        }
+
     }
 
     public static class XpPctFunction extends Function<Float> {

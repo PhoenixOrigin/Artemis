@@ -314,6 +314,10 @@ public final class FunctionManager extends CoreManager {
         registerFunction(new CharacterFunctions.XpReqFunction());
         registerFunction(new CharacterFunctions.XpReqRawFunction());
         registerFunction(new CharacterFunctions.XpPctFunction());
+        registerFunction(new CharacterFunctions.XpPerMinuteFunction());
+        registerFunction(new CharacterFunctions.XpNeededFunction());
+        registerFunction(new CharacterFunctions.MinutesTillLevelUp());
+        registerFunction(new CharacterFunctions.MinutesTillLevelUp());
 
         registerFunction(new EnvironmentFunctions.ClockFunction());
         registerFunction(new EnvironmentFunctions.ClockmFunction());
